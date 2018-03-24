@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, View, StyleSheet, Text } from 'react-native';
+import { ScrollView, RefreshControl, View, StyleSheet, Text } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import Card from '../components/Card';
 import SearchBar from '../components/SearchBar';
@@ -26,8 +26,8 @@ export default class CoursesScreen extends React.Component {
         style={styles.container}
         refreshControl={
           <RefreshControl
-            refreshing={this.state.refreshing}
-            onRefresh={this._onRefresh.bind(this)}
+            refreshing={this.state.loading}
+            onRefresh={() => {}}
           />
         }>
         <SearchBar
