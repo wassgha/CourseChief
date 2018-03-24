@@ -15,18 +15,27 @@ export default class CoursesScreen extends React.Component {
     super(props);
     this.state = {
       courses: [],
-      loading: true
+      loading: true,
+      search: ''
     }
     API.listCourses().then(courses => this.setState({courses, loading: false}))
   }
 
   render() {
+    const { courses, loading, search } = this.state;
+
+    const filteredCourses = _.filter(courses, (course) => _.includes(
+          _.lowerCase(course.course_title),
+          _.lowerCase(search)
+      )
+    )
+
     return (
       <ScrollView
         style={styles.container}
         refreshControl={
           <RefreshControl
-            refreshing={this.state.loading}
+            refreshing={loading}
             onRefresh={() => {}}
           />
         }>
@@ -35,11 +44,13 @@ export default class CoursesScreen extends React.Component {
           platform='android'
           onChangeText={() => {}}
           onClear={() => {}}
-          placeholder='Type Here...' />
+          placeholder='Type Here...'
+          onChangeText={(search) => this.setState({search})}
+          value={search} />
 
         {
-          this.state.courses &&
-          this.state.courses.map(({ course_title, course_descr, course_id, term_descr }) => {
+          filteredCourses &&
+          filteredCourses.map(({ course_title, course_descr, course_id, term_descr }) => {
             return (
               <Card key={course_id}>
                 <View style={styles.labelTitleContainer}>
