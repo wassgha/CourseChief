@@ -18,6 +18,10 @@ export default class CoursesScreen extends React.Component {
       loading: true,
       search: ''
     }
+    this.refresh();
+  }
+
+  refresh() {
     API.listCourses().then(courses => this.setState({courses, loading: false}))
   }
 
@@ -36,7 +40,7 @@ export default class CoursesScreen extends React.Component {
         refreshControl={
           <RefreshControl
             refreshing={loading}
-            onRefresh={() => {}}
+            onRefresh={() => this.refresh()}
           />
         }>
         <SearchBar
@@ -66,7 +70,7 @@ export default class CoursesScreen extends React.Component {
                   </Text>
                 </View>
                 <Text style={styles.courseDesc}>
-                  { _.trim(course_descr, {length: 50}) }
+                  { _.truncate(course_descr, {length: 120}) }
                 </Text>
               </Card>
             )
