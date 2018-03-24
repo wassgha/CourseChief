@@ -68,6 +68,11 @@ export default class CoursesScreen extends React.Component {
                     numberOfLines={1}>
                     { course_title }
                   </Text>
+                  <View style={styles.plusButton}>
+                    <Text style={styles.labelText}>
+                      +
+                    </Text>
+                  </View>
                 </View>
                 <Text style={styles.courseDesc}>
                   { _.truncate(course_descr, {length: 120}) }
@@ -108,6 +113,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     flex: 1
+  },
+  plusButton: {
+    backgroundColor: '#8e44ad',
+    width: 25,
+    height: 25,
+    borderRadius: 12.5,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 
 });
