@@ -108,6 +108,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     flex: 1
+  },
+  courseDesc: {
+    color: '#555',
   }
 
 });
