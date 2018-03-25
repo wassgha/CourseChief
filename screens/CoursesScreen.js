@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, RefreshControl, View, StyleSheet, Text } from 'react-native';
+import { ScrollView, RefreshControl, View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import Card from '../components/Card';
 import SearchBar from '../components/SearchBar';
@@ -48,7 +48,7 @@ export default class CoursesScreen extends React.Component {
           platform='android'
           onChangeText={() => {}}
           onClear={() => {}}
-          placeholder='Type Here...'
+          placeholder='Look up courses...'
           onChangeText={(search) => this.setState({search})}
           value={search} />
 
@@ -68,14 +68,14 @@ export default class CoursesScreen extends React.Component {
                     numberOfLines={1}>
                     { course_title }
                   </Text>
-                  <View style={styles.plusButton}>
-                    <Text style={styles.labelText}>
+                  <TouchableOpacity style={styles.plusButton}>
+                    <Text style={styles.plusButtonText}>
                       +
                     </Text>
-                  </View>
+                  </TouchableOpacity>
                 </View>
                 <Text style={styles.courseDesc}>
-                  { _.truncate(course_descr, {length: 120}) }
+                  { (course_descr != 'null') ? _.truncate(course_descr, {length: 120}) : (<Text> Course Description is not available </Text>) }
                 </Text>
               </Card>
             )
@@ -109,6 +109,11 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center'
   },
+  plusButtonText: {
+    color: 'white',
+    textAlign: 'center',
+    fontWeight: 'bold'
+  },
   courseTitle: {
     fontSize: 14,
     fontWeight: 'bold',
@@ -116,9 +121,9 @@ const styles = StyleSheet.create({
   },
   plusButton: {
     backgroundColor: '#8e44ad',
-    width: 25,
-    height: 25,
-    borderRadius: 12.5,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center'
   }
