@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
-import toggleCourse from './toggleCourse'
+import myEvents from './myEvents'
 
 export default combineReducers({
-  toggleCourse
+  myEvents
 })

@@ -1,24 +1,20 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 import { TabNavigator, TabBarBottom } from 'react-navigation';
 
 import Colors from '../constants/Colors';
 
-import HomeScreen from '../screens/HomeScreen';
-import CoursesScreen from '../screens/CoursesScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import FindScreen from '../screens/FindScreen';
+import CalendarScreen from '../screens/CalendarScreen';
 
 export default TabNavigator(
   {
-    Courses: {
-      screen: CoursesScreen,
+    Find: {
+      screen: FindScreen,
     },
-    Home: {
-      screen: HomeScreen,
-    },
-    Settings: {
-      screen: SettingsScreen,
+    Calendar: {
+      screen: CalendarScreen,
     },
   },
   {
@@ -27,21 +23,14 @@ export default TabNavigator(
         const { routeName } = navigation.state;
         let iconName;
         switch (routeName) {
-          case 'Courses':
-            iconName = Platform.OS === 'ios' ? `ios-school${focused ? '' : '-outline'}` : 'md-school';
+          case 'Find':
+            iconName = 'calendar-plus';
             break;
-          case 'Home':
-            iconName =
-              Platform.OS === 'ios'
-                ? `ios-information-circle${focused ? '' : '-outline'}`
-                : 'md-information-circle';
-            break;
-          case 'Settings':
-            iconName =
-              Platform.OS === 'ios' ? `ios-options${focused ? '' : '-outline'}` : 'md-options';
+          case 'Calendar':
+            iconName = 'calendar';
         }
         return (
-          <Ionicons
+          <Icon
             name={iconName}
             size={28}
             style={{ marginBottom: -3 }}
