@@ -1,12 +1,14 @@
 import React from 'react';
-import { ScrollView, RefreshControl, View, StyleSheet, Text } from 'react-native';
+import { ScrollView, RefreshControl, View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
+import Course from '../components/Course.js'
 import { ExpoLinksView } from '@expo/samples';
-import Card from '../components/Card';
 import SearchBar from '../components/SearchBar';
 import * as API from '../helpers/helper_api';
 import _ from 'lodash';
+import { toggleCourse } from '../actions';
 
-export default class CoursesScreen extends React.Component {
+class CoursesScreen extends React.Component {
   static navigationOptions = {
     title: 'Courses',
   };
@@ -27,6 +29,7 @@ export default class CoursesScreen extends React.Component {
 
   render() {
     const { courses, loading, search } = this.state;
+    const { selectCourse, selectedCourses } = this.props;
 
     const filteredCourses = _.filter(courses, (course) => _.includes(
           _.lowerCase(course.course_title),
@@ -43,12 +46,15 @@ export default class CoursesScreen extends React.Component {
             onRefresh={() => this.refresh()}
           />
         }>
+        <Text>
+          Selected courses : {selectedCourses && selectedCourses.join(',')}
+        </Text>
         <SearchBar
           showLoading
           platform='android'
           onChangeText={() => {}}
           onClear={() => {}}
-          placeholder='Type Here...'
+          placeholder='Look up courses...'
           onChangeText={(search) => this.setState({search})}
           value={search} />
 
@@ -56,23 +62,14 @@ export default class CoursesScreen extends React.Component {
           filteredCourses &&
           filteredCourses.map(({ course_title, course_descr, course_id, term_descr }) => {
             return (
-              <Card key={course_id}>
-                <View style={styles.labelTitleContainer}>
-                  <View style={styles.label}>
-                    <Text style={styles.labelText}>
-                      { term_descr }
-                    </Text>
-                  </View>
-                  <Text
-                    style={styles.courseTitle}
-                    numberOfLines={1}>
-                    { course_title }
-                  </Text>
-                </View>
-                <Text style={styles.courseDesc}>
-                  { _.truncate(course_descr, {length: 120}) }
-                </Text>
-              </Card>
+              <Course onPress={() => {
+                  selectCourse(course_id)
+                }}
+                key={course_id}
+                id={course_id}
+                term={term_descr}
+                course_title={course_title}
+                course_descr={course_descr} />
             )
           })
         }
@@ -81,36 +78,22 @@ export default class CoursesScreen extends React.Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+    selectCourse: (course_id) => dispatch(toggleCourse(course_id))
+})
+
+
+const mapStateToProps = (state) => ({
+    selectedCourses: state.toggleCourse
+})
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#eee',
     padding: 15
-  },
-  labelTitleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10
-  },
-  label: {
-    borderRadius: 3,
-    backgroundColor: '#8e44ad',
-    padding: 4,
-    marginRight: 5,
-    flexDirection: 'row',
-    justifyContent: 'center'
-  },
-  labelText: {
-    color: 'white',
-    textAlign: 'center'
-  },
-  courseTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    flex: 1
-  },
-  courseDesc: {
-    color: '#555',
   }
-
 });
+
+export default connect(mapStateToProps, mapDispatchToProps)(CoursesScreen);
